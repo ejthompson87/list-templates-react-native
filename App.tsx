@@ -6,7 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TemplatesScreen from './src/screens/TemplatesScreen'
 import ActiveListsScreen from './src/screens/ActiveListsScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FaListUl } from "react-icons/fa";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,8 +21,7 @@ export default function App() {
           options={{
             tabBarLabel: 'Templates',
             tabBarIcon: () => (
-              // <FaListUl name="templates" color={color} size={size} />
-              <View><Text>Hello</Text></View>
+              // add icon here
             ),
           }}
         />
