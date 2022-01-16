@@ -3,25 +3,40 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import TemplatesScreen from './src/screens/templatesScreen'
+import TemplatesScreen from './src/screens/TemplatesScreen'
+import ActiveListsScreen from './src/screens/ActiveListsScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { FaListUl } from "react-icons/fa";
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
+const Tab = createBottomTabNavigator();
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Templates" component={TemplatesScreen} />
-      </Stack.Navigator>
+      <Tab.Navigator>
+        <Tab.Screen 
+          name="Templates" 
+          component={TemplatesScreen} 
+          options={{
+            tabBarLabel: 'Templates',
+            tabBarIcon: () => (
+              // <FaListUl name="templates" color={color} size={size} />
+              <View><Text>Hello</Text></View>
+            ),
+          }}
+        />
+        <Tab.Screen name="Active Lists" component={ActiveListsScreen} />
+      </Tab.Navigator>
     </NavigationContainer>
+
+    // <NavigationContainer>
+    //   <Stack.Navigator>
+    //     <Stack.Screen name="Templates" component={TemplatesScreen} />
+    //     <Stack.Screen name="ActiveLists" component={ActiveListsScreen} />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
   );
 }
 
