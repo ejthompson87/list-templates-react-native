@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TemplatesScreen from './src/screens/TemplatesScreen'
 import ActiveListsScreen from './src/screens/ActiveListsScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,12 +21,21 @@ export default function App() {
           component={TemplatesScreen} 
           options={{
             tabBarLabel: 'Templates',
-            tabBarIcon: () => (
-              // add icon here
+            tabBarIcon: (color: string, size: string) => (
+              <MaterialCommunityIcons name="format-list-bulleted" color={color} size={24} />
             ),
           }}
         />
-        <Tab.Screen name="Active Lists" component={ActiveListsScreen} />
+        <Tab.Screen 
+          name="Active Lists" 
+          component={ActiveListsScreen} 
+          options={{
+          tabBarLabel: 'Active Lists',
+            tabBarIcon: (color: string, size: string) => (
+              <MaterialCommunityIcons name="format-list-checks" color={color} size={24} />
+            ),
+          }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
 
