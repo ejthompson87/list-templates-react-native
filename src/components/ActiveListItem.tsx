@@ -13,9 +13,9 @@ interface ActiveListItemProps {
     listItem: ActiveListItemModel;
     autoFocus: boolean;
     index: number;
-    checked(index: number): boolean;
+    checked(index: number): void;
     delete(item: ActiveListItemModel): void;
-    updateText(index: number, text: string): ActiveListItemModel;
+    updateText(index: number, text: string): void;
     textBlur(item: ActiveListItemModel): void;
 }
 

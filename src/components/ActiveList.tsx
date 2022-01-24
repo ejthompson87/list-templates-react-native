@@ -1,6 +1,15 @@
 import React from "react";
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  View,
+  TouchableNativeFeedback
+} from 'react-native';
 import { ActiveListModel } from "../models/ActiveListModel";
 import { ActiveListItemModel } from "../models/ActiveListItemModel";
+import ActiveListItem from "./ActiveListItem";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface ActiveListProps {
   list: ActiveListModel;
@@ -9,7 +18,7 @@ interface ActiveListProps {
   onChange(list: ActiveListItemModel[]): void;
 }
 
-export default class ActiveList extends React.Component<ActiveListProps> {
+export default class ActiveList extends React.Component<ActiveListProps, { autoFocus: boolean }> {
   newItemList: ActiveListItemModel;
 
   constructor(props: any) {
@@ -84,4 +93,101 @@ export default class ActiveList extends React.Component<ActiveListProps> {
     this.setState({autoFocus: false});
   }
 
+  render() {
+    if (this.props.list!=null && this.props.list.items!=null) {
+      return (
+        <View style={[styles.container, styles.activeListBorder]}>
+          <ScrollView>
+            <FlatList
+                data={this.props.list.items}
+                removeClippedSubviews={false}
+                extraData={this.props}
+                renderItem={({ item, index }) => {
+                  if (!item.checked || (item.checked && this.props.showChecked)) {
+                    return (
+                      <View> 
+                        <ActiveListItem 
+                          index={index} 
+                          listItem={item} 
+                          delete={this.onDelete} 
+                          checked={this.onChecked} 
+                          updateText={this.onTextChange}
+                          textBlur={this.onTextBlur}
+                          autoFocus={this.state.autoFocus}
+                        >
+                        </ActiveListItem>
+                      </View>
+                    )
+                  } return null;
+              }} 
+            />
+          </ScrollView>    
+
+          <View style={styles.addButtonInner}>
+            <TouchableNativeFeedback
+                onPress={() => this.addItem()}
+                background={TouchableNativeFeedback.SelectableBackground()}>
+                  <View style={[styles.addButtonBorder, styles.activeListButton]}>
+                  <Icon 
+                    name="add" 
+                    size={26} 
+                    color="white" 
+                  />
+                  </View>
+            </TouchableNativeFeedback>        
+          </View>
+
+        </View>
+      );
+    } else {
+      return(
+        <View style={styles.addButtonInner}>
+          <TouchableNativeFeedback
+              onPress={() => this.addItem()}
+              background={TouchableNativeFeedback.SelectableBackground()}>
+                <View style={[styles.addButtonBorder, styles.activeListButton]}>
+                <Icon 
+                    name="add" 
+                    size={26} 
+                    color="white" 
+                />
+                </View>
+          </TouchableNativeFeedback>        
+        </View>
+      );
+    }
+  }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  activeListBorder: {
+    borderColor: '#19647E',
+    borderTopWidth: 8,
+  },
+  listItem: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginBottom: 5,
+  },
+  addButtonInner: {
+    flexDirection: 'row',
+    height: 70,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginRight: 10,
+    marginBottom: 10
+  },
+  addButtonBorder: {
+    paddingHorizontal: 17,
+    paddingVertical: 12,
+    borderRadius: 50,
+    marginRight: 20
+  },
+  activeListButton: {
+    backgroundColor: '#19647E'
+  }
+});
