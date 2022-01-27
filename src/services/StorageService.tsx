@@ -1,7 +1,8 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActiveListModel } from '../models/ActiveListModel';
+import { TemplateModel } from '../models/TemplateModel';
 
-export const saveLists = async (lists: ActiveListModel[], listsName: string) => {
+export const saveLists = async (lists: ActiveListModel[] | TemplateModel[], listsName: string) => {
     try {
         await AsyncStorage.setItem(listsName, JSON.stringify(lists));
     } catch (error) {
@@ -10,7 +11,7 @@ export const saveLists = async (lists: ActiveListModel[], listsName: string) => 
     }
 }
 
-export const saveList = async (list: ActiveListModel, listsName: string) => {
+export const saveList = async (list: ActiveListModel | TemplateModel, listsName: string) => {
     let lists = await getLists(listsName);
     let index = lists.findIndex((l: ActiveListModel) => l.id === list.id);
     if (index === -1) {

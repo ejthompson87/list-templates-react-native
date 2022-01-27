@@ -48,19 +48,19 @@ export default class EditActiveListScreen extends React.Component<EditActiveList
     // this.showMenu();
   }
   
-  static navigationOptions = (navigation: any) => {
-    return {
-        title: navigation.getParam('title', 'Edit List'),
-        headerTitleStyle: { 
-            // textAlign:"center", 
-            flex:1 
-        },
-        headerTintColor: '#19647E',
-        headerRight: <View>
-            <Icon style={{paddingRight: 30}} name={'menu'} size={22} color={'#19647E'} onPress={navigation.getParam('openActiveListMenu')}/>
-        </View>
-    }
-  };
+//   static navigationOptions = (navigation: any) => {
+//     return {
+//         title: navigation.getParam('title', 'Edit List'),
+//         headerTitleStyle: { 
+//             // textAlign:"center", 
+//             flex:1 
+//         },
+//         headerTintColor: '#19647E',
+//         headerRight: <View>
+//             <Icon style={{paddingRight: 30}} name={'menu'} size={22} color={'#19647E'} onPress={navigation.getParam('openActiveListMenu')}/>
+//         </View>
+//     }
+//   };
 
   onSaveAsTemplate = () => {
     this.props.navigation.state.params.saveAsTemplate(this.state.activeList);
