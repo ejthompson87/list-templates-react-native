@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export interface EditActiveListScreenProps {
     navigation: any,
+    route: any,
 }
 
 export default class EditActiveListScreen extends React.Component<EditActiveListScreenProps, { 
@@ -23,12 +24,14 @@ export default class EditActiveListScreen extends React.Component<EditActiveList
 > {
   _menu = null;
 
-  constructor(props: any) {
+  constructor(props: EditActiveListScreenProps) {
     super(props);
+
+    let paramsList = this.props.route.params.list;
     this.state = {
-      activeList: this.props.navigation.state.params.list,
-      showChecked: true,
-      newAtTop: true
+        activeList: paramsList,
+        showChecked: true,
+        newAtTop: true
     };
   }
 
@@ -62,26 +65,26 @@ export default class EditActiveListScreen extends React.Component<EditActiveList
 //     }
 //   };
 
-  onSaveAsTemplate = () => {
-    this.props.navigation.state.params.saveAsTemplate(this.state.activeList);
-    // this.hideMenu();
-  }
+  // onSaveAsTemplate = () => {
+  //   this.props.route.params.saveAsTemplate(this.state.activeList);
+  //   // this.hideMenu();
+  // }
 
-  onShowChecked = () => {
-    this.props.navigation.state.params.onShowChecked();
-    this.setState({showChecked: !this.state.showChecked});
-  }
+  // onShowChecked = () => {
+  //   this.props.route.params.onShowChecked();
+  //   this.setState({showChecked: !this.state.showChecked});
+  // }
 
-  onNewAtTop = () => {
-    // this.console.log('set new at top');
-    this.props.navigation.state.params.onNewAtTop();
-    this.setState({newAtTop: !this.state.newAtTop});
-  }
+  // onNewAtTop = () => {
+  //   // this.console.log('set new at top');
+  //   this.props.route.params.onNewAtTop();
+  //   this.setState({newAtTop: !this.state.newAtTop});
+  // }
 
-  onEdit = () => {
-    this.props.navigation.state.params.edit(this.state.activeList);
-    // this.hideMenu();
-  }
+  // onEdit = () => {
+  //   this.props.route.params.edit(this.state.activeList);
+  //   // this.hideMenu();
+  // }
 
   onChecklistChange(list: ActiveListItemModel[]) {
     let existingList = this.state.activeList;
@@ -91,15 +94,18 @@ export default class EditActiveListScreen extends React.Component<EditActiveList
   }
 
   async componentDidMount() {
-    this.props.navigation.setParams({ openActiveListMenu: this.openActiveListMenu});
-    let data = await Storage.getList(this.props.navigation.getParam('id', 'default value'), 'activeLists');
-    this.setState({showChecked: this.props.navigation.getParam('showChecked', true)});
-    this.setState({newAtTop: this.props.navigation.getParam('newAtTop', true)});
-    this.setState({activeList: data});
+    // this.props.navigation.setParams({ openActiveListMenu: this.openActiveListMenu});
+    let data = await Storage.getList(this.props.route.params.id, 'activeLists');
+    // this.setState({showChecked: this.props.navigation.getParam('showChecked', true)});
+    // this.setState({newAtTop: this.props.navigation.getParam('newAtTop', true)});
+    
+    // Oops:
+    // this.setState({activeList: data});
   }
 
   render() {
     // const { navigation } = this.props;
+    console.log("State: ", this.state);
     return ( 
         <View style={styles.container}>
           <View style={{alignItems: 'flex-end', justifyContent: 'flex-end' }}>
@@ -132,9 +138,9 @@ export default class EditActiveListScreen extends React.Component<EditActiveList
 
           <ActiveList
             list={this.state.activeList}
-            showChecked={this.state.showChecked}
-            newAtTop={this.state.newAtTop}
-            onChange={this.onChecklistChange.bind(this)}
+            // showChecked={this.state.showChecked}
+            // newAtTop={this.state.newAtTop}
+            // onChange={this.onChecklistChange.bind(this)}
           ></ActiveList>
         </View>
     );
