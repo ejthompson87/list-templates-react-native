@@ -52,160 +52,160 @@ export default class ActiveListsScreen extends React.Component<ActiveListScreenP
   // savedActiveLists holds array of listIds
   // savedActiveList holds activeList obj
 
-  // async componentDidMount() {
-  //   let data = await Storage.getLists('activeLists');
-  //   let templates = await Storage.getLists('templateLists');
-  //   this.setState({activeLists: data, modalVisible: false, selectedList: null, templateLists: templates});
+  async componentDidMount() {
+    let data = await Storage.getLists('activeLists');
+    let templates = await Storage.getLists('templateLists');
+    this.setState({activeLists: data, modalVisible: false, selectedList: null, templateLists: templates});
 
-  //   this.didFocusSubscription = this.props.navigation.addListener(
-  //     'didFocus',
-  //     async () => {
-  //       let lists = await Storage.getLists('activeLists');
-  //       this.setState({activeLists: lists});
-  //     }
-  //   );
-  // }
+    // this.didFocusSubscription = this.props.navigation.addListener(
+    //   'didFocus',
+    //   async () => {
+    //     let lists = await Storage.getLists('activeLists');
+    //     this.setState({activeLists: lists});
+    //   }
+    // );
+  }
 
-  // componentWillUnmount() {
-  //   this.didFocusSubscription.remove();
-  // }
+  componentWillUnmount() {
+    // this.didFocusSubscription.remove();
+  }
   
   _onPressAddList() {
     let newList = {"id": new Date().getTime().toString(), title: "✈️ New list", items: []};
-    // this.getTemplates();
-    // this.setState({ selectedList: newList, templatesLoading: true });
+    this.getTemplates();
+    this.setState({ selectedList: newList, templatesLoading: true });
     this.props.navigation.navigate('EditActiveListScreen', {
       key: newList.id,
       list: newList,
       editTitle: 'Add Active List',
-      // showTemplates: this.state.templateLists.length > 0,
-      // templates: this.state.templateLists,
-      // templateLoading: this.state.templatesLoading,
+      showTemplates: this.state.templateLists.length > 0,
+      templates: this.state.templateLists,
+      templateLoading: this.state.templatesLoading,
       listPrimaryColor: '#19647E',
-      // submit: this.onSave,
-      // delete: this.onDelete,
+      submit: this.onSave,
+      delete: this.onDelete,
     });
   }
 
-  // _editList = (item: ActiveListModel) => {
-  //   this.setState({ selectedList: item, templatesLoading: true });
-  //   this.getTemplates();
-  //   this.props.navigation.navigate('EditActiveListsScreen', {
-  //     key: item.id,
-  //     list: item,
-  //     editTitle: 'Edit Active List',
-  //     showTemplates: false,
-  //     listPrimaryColor: '#19647E',
-  //     submit: this.onSave,
-  //     delete: this.onDelete,
-  //   });
-  //   // this.onSetModalVisible(true);
-  // }
+  _editList = (item: ActiveListModel) => {
+    this.setState({ selectedList: item, templatesLoading: true });
+    this.getTemplates();
+    this.props.navigation.navigate('EditActiveListScreen', {
+      key: item.id,
+      list: item,
+      editTitle: 'Edit Active List',
+      showTemplates: false,
+      listPrimaryColor: '#19647E',
+      submit: this.onSave,
+      delete: this.onDelete,
+    });
+    this.onSetModalVisible(true);
+  }
 
-  // onSetModalVisible = (visible: boolean) => {
-  //   this.setState({ modalVisible: visible });
-  // }
+  onSetModalVisible = (visible: boolean) => {
+    this.setState({ modalVisible: visible });
+  }
 
-  // onTemplateSelected = (list: ActiveListModel, index: number) => {
-  //   let activeListIndex = FindWithAttr(this.state.activeLists, 'id', list.id);
-  //   if (activeListIndex > -1) {
-  //     let updatedlists = UpdateListElement(this.state.activeLists, activeListIndex, (rest: any) => {
-  //       return {...rest, template: this.state.templateLists[index], items: this.state.templateLists[index].items}
-  //     });
-  //     this.setState({activeLists: updatedlists});
-  //     Storage.saveLists(updatedlists, 'activeLists');
-  //   }
-  // }
+  onTemplateSelected = (list: ActiveListModel, index: number) => {
+    let activeListIndex = FindWithAttr(this.state.activeLists, 'id', list.id);
+    if (activeListIndex > -1) {
+      let updatedlists = UpdateListElement(this.state.activeLists, activeListIndex, (rest: any) => {
+        return {...rest, template: this.state.templateLists[index], items: this.state.templateLists[index].items}
+      });
+      this.setState({activeLists: updatedlists});
+      Storage.saveLists(updatedlists, 'activeLists');
+    }
+  }
 
-  // getTemplateIndex(templateId: string) {
-  //   if (templateId != null) {
-  //     for (let i=0; i<this.state.templateLists.length; i++) {
-  //       if (this.state.templateLists[i].id === templateId) {
-  //         return i;
-  //       }
-  //     }
-  //   }
-  //   return -1;
-  // }
+  getTemplateIndex(templateId: string) {
+    if (templateId != null) {
+      for (let i=0; i<this.state.templateLists.length; i++) {
+        if (this.state.templateLists[i].id === templateId) {
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
   
-  // async getTemplates() {
-  //   let templates = await Storage.getLists('templateLists');
-  //   this.setState({templateLists: templates, templatesLoading: false});
-  // } 
+  async getTemplates() {
+    let templates = await Storage.getLists('templateLists');
+    this.setState({templateLists: templates, templatesLoading: false});
+  } 
 
-  // onUpdateTitle = (id: string, text: string) => {
-  //   let index = FindWithAttr(this.state.activeLists, 'id', id);
-  //   if (index > -1) {
-  //     let updatedlists = UpdateListElement(this.state.activeLists, index, (rest: any) => {
-  //       return {...rest, title: text}
-  //     });
-  //     this.setState({activeLists: updatedlists, selectedList: updatedlists[index]})
-  //     Storage.saveLists(updatedlists, 'activeLists');
-  //   }
-  // }
+  onUpdateTitle = (id: string, text: string) => {
+    let index = FindWithAttr(this.state.activeLists, 'id', id);
+    if (index > -1) {
+      let updatedlists = UpdateListElement(this.state.activeLists, index, (rest: any) => {
+        return {...rest, title: text}
+      });
+      this.setState({activeLists: updatedlists, selectedList: updatedlists[index]})
+      Storage.saveLists(updatedlists, 'activeLists');
+    }
+  }
 
-  // onDelete = (list: ActiveListModel) => {
-  //   let filteredLists = this.state.activeLists.filter((activeList) => activeList.id !== list.id);
-  //   this.setState({activeLists: filteredLists});
-  //   Storage.saveLists(filteredLists, 'activeLists');
-  // }
+  onDelete = (list: ActiveListModel) => {
+    let filteredLists = this.state.activeLists.filter((activeList) => activeList.id !== list.id);
+    this.setState({activeLists: filteredLists});
+    Storage.saveLists(filteredLists, 'activeLists');
+  }
 
-  // setItemsDefaultChecked(listItems: TemplateItemModel[]): ActiveListItemModel[] {
-  //   return listItems.map(item => {
-  //     return {
-  //       key: item.key,
-  //       text: item.text,
-  //       checked: false,
-  //     }
-  //   });
-  // }
+  setItemsDefaultChecked(listItems: TemplateItemModel[]): ActiveListItemModel[] {
+    return listItems.map(item => {
+      return {
+        key: item.key,
+        text: item.text,
+        checked: false,
+      }
+    });
+  }
 
-  // onSave = (list: ActiveListModel, selectedTemplateIndex = -1) => {
-  //   if (selectedTemplateIndex > -1) {
-  //     list.items = this.setItemsDefaultChecked(this.state.templateLists[selectedTemplateIndex].items);
-  //   }
-  //   let activeListIndex = FindWithAttr(this.state.activeLists, 'id', list.id);
-  //   let updateLists = this.state.activeLists;
-  //   if (activeListIndex > -1) {
-  //     updateLists[activeListIndex] = list;
-  //   }
-  //   else {
-  //     updateLists.push(list);
-  //   }
-  //   this.setState({activeLists: updateLists});
-  //   Storage.saveLists(updateLists, 'activeLists');
-  // }
+  onSave = (list: ActiveListModel, selectedTemplateIndex = -1) => {
+    if (selectedTemplateIndex > -1) {
+      list.items = this.setItemsDefaultChecked(this.state.templateLists[selectedTemplateIndex].items);
+    }
+    let activeListIndex = FindWithAttr(this.state.activeLists, 'id', list.id);
+    let updateLists = this.state.activeLists;
+    if (activeListIndex > -1) {
+      updateLists[activeListIndex] = list;
+    }
+    else {
+      updateLists.push(list);
+    }
+    this.setState({activeLists: updateLists});
+    Storage.saveLists(updateLists, 'activeLists');
+  }
 
-  // onSaveAsTemplate = (list: ActiveListModel) => {
-  //   this.getTemplates();
-  //   list.id = new Date().getTime().toString();
-  //   for (let item of list.items) {
-  //     item.checked = false;
-  //   }
-  //   let existingTemplates = this.state.templateLists;
-  //   let allTemplates = [...existingTemplates, list];
-  //   this.setState({templateLists: allTemplates});
-  //   Storage.saveLists(allTemplates, 'templateLists');
-  //   this.props.navigation.navigate('TemplatesStack');
+  onSaveAsTemplate = (list: ActiveListModel) => {
+    this.getTemplates();
+    list.id = new Date().getTime().toString();
+    for (let item of list.items) {
+      item.checked = false;
+    }
+    let existingTemplates = this.state.templateLists;
+    let allTemplates = [...existingTemplates, list];
+    this.setState({templateLists: allTemplates});
+    Storage.saveLists(allTemplates, 'templateLists');
+    this.props.navigation.navigate('TemplatesStack');
 
-  //   // this.props.navigation.navigate(NavigationActions.navigate({
-  //   //   routeName: 'TemplatesStack',
-  //   //   action: NavigationActions.navigate({ routeName: 'TemplatesScreen'})
-  //   // }));
-  // }
+    // this.props.navigation.navigate(NavigationActions.navigate({
+    //   routeName: 'TemplatesStack',
+    //   action: NavigationActions.navigate({ routeName: 'TemplatesScreen'})
+    // }));
+  }
 
-  // onShowChecked = () => {
-  //   this.setState({showChecked: !this.state.showChecked});
-  // }
+  onShowChecked = () => {
+    this.setState({showChecked: !this.state.showChecked});
+  }
 
-  // onNewAtTop = () => {
-  //   this.setState({newAtTop: !this.state.newAtTop});
-  // }
+  onNewAtTop = () => {
+    this.setState({newAtTop: !this.state.newAtTop});
+  }
 
-  // async _onPressDeleteAllLists() {
-  //   await Storage.deleteLists('activeLists');
-  //   this.setState({activeLists: []});
-  // } 
+  async _onPressDeleteAllLists() {
+    await Storage.deleteLists('activeLists');
+    this.setState({activeLists: []});
+  } 
 
   render() {
     const { navigate } = this.props.navigation;
@@ -221,21 +221,20 @@ export default class ActiveListsScreen extends React.Component<ActiveListScreenP
                 onPress={() => navigate('EditActiveListScreen', {
                   id: item.id, 
                   title: item.title, 
-                  // saveAsTemplate: this.onSaveAsTemplate, 
-                  // showChecked: this.state.showChecked, 
-                  // onShowChecked: this.onShowChecked, 
-                  // newAtTop: this.state.newAtTop,
-                  // onNewAtTop: this.onNewAtTop,
-                  // edit: this._editList,
+                  saveAsTemplate: this.onSaveAsTemplate, 
+                  showChecked: this.state.showChecked, 
+                  onShowChecked: this.onShowChecked, 
+                  newAtTop: this.state.newAtTop,
+                  onNewAtTop: this.onNewAtTop,
+                  edit: this._editList,
                 })}
-                // onLongPress={() => this._editList(item)}
+                onLongPress={() => this._editList(item)}
               >
 
                 <View style={styles.listItem}>
                   <Text style={styles.itemContainer}>{item.title}</Text>
                 </View>
               </TouchableHighlight>
-
             )}
           />
 
@@ -251,6 +250,21 @@ export default class ActiveListsScreen extends React.Component<ActiveListScreenP
                   />
               </View>
             </TouchableNativeFeedback>
+            {/* <TouchableNativeFeedback
+              onPress={() => this._onPressDeleteAllLists()}
+              background={TouchableNativeFeedback.SelectableBackground()}>
+            <View style={styles.addButtonInner}>
+
+              <View>
+                <Ionicons
+                  name={'md-add'}
+                  size={26}
+                  color={'red'}
+                />
+              </View>
+            </View>
+
+          </TouchableNativeFeedback> */}
           </View>
       </SafeAreaView>
     );

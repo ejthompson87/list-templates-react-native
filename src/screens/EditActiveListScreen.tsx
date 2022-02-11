@@ -65,26 +65,25 @@ export default class EditActiveListScreen extends React.Component<EditActiveList
 //     }
 //   };
 
-  // onSaveAsTemplate = () => {
-  //   this.props.route.params.saveAsTemplate(this.state.activeList);
-  //   // this.hideMenu();
-  // }
+  onSaveAsTemplate = () => {
+    this.props.route.params.saveAsTemplate(this.state.activeList);
+    // this.hideMenu();
+  }
 
-  // onShowChecked = () => {
-  //   this.props.route.params.onShowChecked();
-  //   this.setState({showChecked: !this.state.showChecked});
-  // }
+  onShowChecked = () => {
+    this.props.route.params.onShowChecked();
+    this.setState({showChecked: !this.state.showChecked});
+  }
 
-  // onNewAtTop = () => {
-  //   // this.console.log('set new at top');
-  //   this.props.route.params.onNewAtTop();
-  //   this.setState({newAtTop: !this.state.newAtTop});
-  // }
+  onNewAtTop = () => {
+    this.props.route.params.onNewAtTop();
+    this.setState({newAtTop: !this.state.newAtTop});
+  }
 
-  // onEdit = () => {
-  //   this.props.route.params.edit(this.state.activeList);
-  //   // this.hideMenu();
-  // }
+  onEdit = () => {
+    this.props.route.params.edit(this.state.activeList);
+    // this.hideMenu();
+  }
 
   onChecklistChange(list: ActiveListItemModel[]) {
     let existingList = this.state.activeList;
@@ -138,9 +137,9 @@ export default class EditActiveListScreen extends React.Component<EditActiveList
 
           <ActiveList
             list={this.state.activeList}
-            // showChecked={this.state.showChecked}
-            // newAtTop={this.state.newAtTop}
-            // onChange={this.onChecklistChange.bind(this)}
+            showChecked={this.state.showChecked}
+            newAtTop={this.state.newAtTop}
+            onChange={this.onChecklistChange.bind(this)}
           ></ActiveList>
         </View>
     );

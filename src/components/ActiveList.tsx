@@ -15,9 +15,9 @@ import { Ionicons } from '@expo/vector-icons';
 
 interface ActiveListProps {
   list: ActiveListModel;
-  // newAtTop: boolean;
-  // showChecked: boolean;
-  // onChange(list: ActiveListItemModel[]): void;
+  newAtTop: boolean;
+  showChecked: boolean;
+  onChange(list: ActiveListItemModel[]): void;
 }
 
 export default class ActiveList extends React.Component<ActiveListProps, { autoFocus: boolean }> {
@@ -28,7 +28,7 @@ export default class ActiveList extends React.Component<ActiveListProps, { autoF
     this.state = {
       autoFocus: false,
     };
-    // if (props.onChange == null) props.onChange = () => {};
+    if (props.onChange == null) props.onChange = () => {};
 
     this.newItemList = { 
       text: "",
@@ -38,28 +38,28 @@ export default class ActiveList extends React.Component<ActiveListProps, { autoF
   }
 
   addItem() {
-    // this.setState({autoFocus: true});
+    this.setState({autoFocus: true});
     console.log("Props: ", this.props)
     let list = this.props.list.items;
     let itemTemplate = this.newItemList;
     let newItemList = [];
-    // if (this.props.newAtTop) {
-    //   newItemList = [
-    //     { key: new Date().getTime().toString(), text: itemTemplate.text, checked: false },
-    //     ...list.slice(0)
-    //   ]
-    // } else {
-      // newItemList = list.concat({ key: new Date().getTime().toString(), text: itemTemplate.text, checked: false });
-    // }
-    // this.props.onChange(newItemList);
+    if (this.props.newAtTop) {
+      newItemList = [
+        { key: new Date().getTime().toString(), text: itemTemplate.text, checked: false },
+        ...list.slice(0)
+      ]
+    } else {
+      newItemList = list.concat({ key: new Date().getTime().toString(), text: itemTemplate.text, checked: false });
+    }
+    this.props.onChange(newItemList);
   }
   
-  // onChecked = (index: number) => {
-  //   let newList = this.updateListElement(this.props.list.items, index, (old: ActiveListItemModel) => {
-  //     return {...old, checked: !old.checked}
-  //   });
-    // this.props.onChange(newList);
-  // }
+  onChecked = (index: number) => {
+    let newList = this.updateListElement(this.props.list.items, index, (old: ActiveListItemModel) => {
+      return {...old, checked: !old.checked}
+    });
+    this.props.onChange(newList);
+  }
   
   // editFunc MUST return a new element and not mutate the old element
   updateListElement = (list: ActiveListItemModel[], index: number, editFunc: any) => {
@@ -77,24 +77,25 @@ export default class ActiveList extends React.Component<ActiveListProps, { autoF
     ]
   }
   
-  // onDelete = (item: ActiveListItemModel) => {
-  //   let filteredList = this.props.list.items.filter((listitem) => listitem.key !== item.key);
-  //   this.props.onChange(filteredList);
-  // }
+  onDelete = (item: ActiveListItemModel) => {
+    let filteredList = this.props.list.items.filter((listitem) => listitem.key !== item.key);
+    this.props.onChange(filteredList);
+  }
   
-  // onTextChange = (index: number, text: string) => {
-  //   let newList = this.updateListElement(this.props.list.items, index, (old: ActiveListItemModel) => {
-  //     return {...old, text: text}
-  //   });
-  //   this.props.onChange(newList);
-  // }
+  onTextChange = (index: number, text: string) => {
+    console.log('text change: ', text)
+    let newList = this.updateListElement(this.props.list.items, index, (old: ActiveListItemModel) => {
+      return {...old, text: text}
+    });
+    this.props.onChange(newList);
+  }
   
-  // onTextBlur = (item: ActiveListItemModel) => {
-  //   if (item.text === '') {
-  //     this.onDelete(item);
-  //   }
-  //   this.setState({autoFocus: false});
-  // }
+  onTextBlur = (item: ActiveListItemModel) => {
+    if (item.text === '') {
+      this.onDelete(item);
+    }
+    this.setState({autoFocus: false});
+  }
 
   render() {
     if (this.props.list!=null && this.props.list.items!=null) {
@@ -106,22 +107,22 @@ export default class ActiveList extends React.Component<ActiveListProps, { autoF
                 removeClippedSubviews={false}
                 extraData={this.props}
                 renderItem={({ item, index }) => {
-                  // if (!item.checked || (item.checked && this.props.showChecked)) {
+                  if (!item.checked || (item.checked && this.props.showChecked)) {
                     return (
                       <View> 
                         <ActiveListItem 
                           index={index} 
                           listItem={item} 
-                          // delete={this.onDelete} 
-                          // checked={this.onChecked} 
-                          // updateText={this.onTextChange}
-                          // textBlur={this.onTextBlur}
+                          delete={this.onDelete} 
+                          checked={this.onChecked} 
+                          updateText={this.onTextChange}
+                          textBlur={this.onTextBlur}
                           autoFocus={this.state.autoFocus}
                         >
                         </ActiveListItem>
                       </View>
                     )
-                  // } return null;
+                  } return null;
               }} 
             />
           </SafeAreaView>    

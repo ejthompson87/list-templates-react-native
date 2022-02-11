@@ -2,10 +2,9 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Text,
+  TextInput,
 } from 'react-native';
-import { CheckBox } from 'react-native-elements';
-import { TextInput } from 'react-native-gesture-handler';
+import Checkbox from 'expo-checkbox';
 import { Ionicons } from '@expo/vector-icons';
 import { ActiveListItemModel } from '../models/ActiveListItemModel';
 import { font, colors } from '../styles/Variables';
@@ -14,10 +13,10 @@ interface ActiveListItemProps {
     listItem: ActiveListItemModel;
     autoFocus: boolean;
     index: number;
-    // checked(index: number): void;
-    // delete(item: ActiveListItemModel): void;
-    // updateText(index: number, text: string): void;
-    // textBlur(item: ActiveListItemModel): void;
+    checked(index: number): void;
+    delete(item: ActiveListItemModel): void;
+    updateText(index: number, text: string): void;
+    textBlur(item: ActiveListItemModel): void;
 }
 
 export default class ActiveListItem extends React.Component<ActiveListItemProps> {
@@ -28,28 +27,26 @@ export default class ActiveListItem extends React.Component<ActiveListItemProps>
         <View style={styles.itemContainer}>
           <View style={styles.itemWithCheckboxWrapper}>
             <View>
-                // @ts-ignore
-                <CheckBox 
-                  checked={this.props.listItem.checked} 
-                  // onPress={() => this.props.checked(this.props.index)} 
-                  checkedColor={'#72BCD4'}
-                  containerStyle={{ backgroundColor: 'transparent', borderColor: 'transparent', flex: 0.1 }}
-                />
+              <Checkbox
+                style={styles.checkbox}
+                disabled={false}
+                value={this.props.listItem.checked}
+                onValueChange={() => this.props.checked(this.props.index)}
+                color={this.props.listItem.checked ? '#72BCD4' : undefined}
+              />
             </View>
             <View style={styles.textContainer}>
-              <Text>
                 <TextInput 
-                  autoFocus={this.props.autoFocus} 
                   style={[styles.itemText, this.props.listItem.checked ? styles.checkedItemText : null]} 
-                  // onChangeText={(text: string) => this.props.updateText(this.props.index, text)} 
+                  onChangeText={(text: string) => this.props.updateText(this.props.index, text)} 
                   value={this.props.listItem.text}
-                  // onBlur={() => this.props.textBlur(this.props.listItem)}
+                  autoFocus={this.props.autoFocus} 
+                  onBlur={() => this.props.textBlur(this.props.listItem)}
                   textAlignVertical={'center'}
+                  blurOnSubmit={false}
                   // onSubmitEditing={() => this.myFunction()}
-                  // blurOnSubmit={false}
                   >
                 </TextInput>
-              </Text>
             </View>
           </View>
         </View>
@@ -59,13 +56,12 @@ export default class ActiveListItem extends React.Component<ActiveListItemProps>
             color={'black'}
             size={20}
             style={this.props.listItem.checked ? styles.checkedItemText: null}
-            // onPress={() => this.props.delete(this.props.listItem)} 
+            onPress={() => this.props.delete(this.props.listItem)} 
           />
         </View>
       </View>
     );
   }
-
 }
 
 const styles = StyleSheet.create({
@@ -101,5 +97,8 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: font.FONT_SIZE,
+  },
+  checkbox: {
+    margin: 5,
   }
 });
